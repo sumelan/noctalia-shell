@@ -53,7 +53,7 @@
           configs.noctalia-shell = "${
             self.packages.${system}.noctalia-shell
           }/etc/xdg/quickshell/noctalia-shell";
-          activeConfig = lib.mkIf cfg.enableSystemd "Noctalia";
+          activeConfig = lib.mkIf cfg.enableSystemd "noctalia-shell";
           systemd = lib.mkIf cfg.enableSystemd {
             enable = true;
             target = "graphical-session.target";
