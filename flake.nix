@@ -69,7 +69,7 @@
           {
             window-rules = [
               {
-                geometry-cornerradisu = {
+                geometry-corner-radius = {
                   bottom-left = 20.0;
                   bottom-right = 20.0;
                   top-left = 20.0;
