@@ -153,7 +153,7 @@ Singleton {
                            "title": toplevel.title || "",
                            "appId": toplevel.class || toplevel.initialClass || "",
                            "workspaceId": toplevel.workspace?.id || null,
-                           "isFocused": Hyprland.activeToplevel && Hyprland.activeToplevel.address === toplevel.address
+                           "isFocused": toplevel.activated === true
                          })
       }
 
