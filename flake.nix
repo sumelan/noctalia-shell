@@ -39,6 +39,7 @@
       inherit (lib) mkEnableOption mkOption mkIf mkMerge;
       inherit (lib.types) str;
       cfg = config.programs.noctalia-shell;
+      hotkeyColor = "#c7a1d8";
     in {
       options.programs.noctalia-shell = {
         enable = mkEnableOption "Noctalia";
@@ -119,19 +120,19 @@
             binds = {
               "${cfg.keybinds.launcher}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "appLauncher" "toggle"];
-                hotkey-overlay.title = "Toggle launcher";
+                hotkey-overlay.title = ''<i>Toggle</i> <span foreground=${hotkeyColor}>launcher</span>'';
               };
               "${cfg.keybinds.notification}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"];
-                hotkey-overlay.title = "Toggle Notification History";
+                hotkey-overlay.title = ''<i>Toggle</i> <span foreground=${hotkeyColor}>Notification History</span>'';
               };
               "${cfg.keybinds.settings}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"];
-                hotkey-overlay.title = "Toggle Settings Panel";
+                hotkey-overlay.title = "<i>Toggle</i> <span foreground=${hotkeyColor}>Settings Panel</span>";
               };
               "${cfg.keybinds.lock}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"];
-                hotkey-overlay.title = "Toggle lock screen";
+                hotkey-overlay.title = "<i>Toggle</i> <span foreground=${hotkeyColor}>lock screen</span>";
               };
             };
           })
