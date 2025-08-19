@@ -40,8 +40,6 @@
     in {
       options.programs.noctalia-shell = {
         enable = lib.mkEnableOption "Noctalia";
-        enableKeybinds =
-          lib.mkEnableOption "Noctalia Niri keybinds";
         enableSystemd =
           lib.mkEnableOption "Noctalia systemd startup";
         enableSpawn =
