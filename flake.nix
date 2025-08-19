@@ -120,19 +120,19 @@
             binds = {
               "${cfg.keybinds.launcher}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "appLauncher" "toggle"];
-                hotkey-overlay.title = ''<i>Toggle</i> <span foreground=${hotkeyColor}>launcher</span>'';
+                hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">launcher</span>'';
               };
               "${cfg.keybinds.notification}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"];
-                hotkey-overlay.title = ''<i>Toggle</i> <span foreground=${hotkeyColor}>Notification History</span>'';
+                hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">Notification History</span>'';
               };
               "${cfg.keybinds.settings}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"];
-                hotkey-overlay.title = "<i>Toggle</i> <span foreground=${hotkeyColor}>Settings Panel</span>";
+                hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">Settings Panel</span>'';
               };
               "${cfg.keybinds.lock}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"];
-                hotkey-overlay.title = "<i>Toggle</i> <span foreground=${hotkeyColor}>lock screen</span>";
+                hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">lock screen</span>'';
               };
             };
           })
