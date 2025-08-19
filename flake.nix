@@ -36,31 +36,52 @@
       lib,
       ...
     }: let
+      inherit (lib) mkEnableOption mkOption mkIf mkMerge;
+      inherit (lib.types) str;
       cfg = config.programs.noctalia-shell;
     in {
       options.programs.noctalia-shell = {
-        enable = lib.mkEnableOption "Noctalia";
-        enableSystemd =
-          lib.mkEnableOption "Noctalia systemd startup";
-        enableSpawn =
-          lib.mkEnableOption "Noctalia Niri spawn-at-startup";
+        enable = mkEnableOption "Noctalia";
+        keybinds = {
+          enable = mkEnableOption "Niri keybinds";
+          launcher = mkOption {
+            type = str;
+            default = "Mod+Space";
+            description = "Keybind to toggle launcher.";
+          };
+          notification = mkOption {
+            type = str;
+            default = "Mod+N";
+            description = "Keybind to toggle notification history.";
+          };
+          settings = mkOption {
+            type = str;
+            default = "Mod+Comma";
+            description = "Keybind to toggle settings panel.";
+          };
+          lock = mkOption {
+            type = str;
+            default = "Mod+Ctrl+L";
+            description = "Keybind to toggle lock screen";
+          };
+        };
+        systemd.enable = mkEnableOption "Systemd startup";
+        spawn.enable = mkEnableOption "Niri spawn-at-startup";
       };
 
-      config = lib.mkIf cfg.enable {
+      config = mkIf cfg.enable {
         programs.quickshell = {
           enable = true;
           package = quickshell.packages.${system}.quickshell;
-          configs.noctalia-shell = "${
-            self.packages.${system}.noctalia-shell
-          }/etc/xdg/quickshell/noctalia-shell";
-          activeConfig = lib.mkIf cfg.enableSystemd "noctalia-shell";
-          systemd = lib.mkIf cfg.enableSystemd {
+          configs.noctalia-shell = "${self.packages.${system}.noctalia-shell}/etc/xdg/quickshell/noctalia-shell";
+          activeConfig = lib.mkIf cfg.systemd.enable "noctalia-shell";
+          systemd = lib.mkIf cfg.systemd.enable {
             enable = true;
             target = "graphical-session.target";
           };
         };
 
-        programs.niri.settings = lib.mkMerge [
+        programs.niri.settings = mkMerge [
           {
             layout = {
               background-color = "transparent";
@@ -94,20 +115,41 @@
               }
             ];
           }
-          (lib.mkIf cfg.enableSpawn {
-            spawn-at-startup = [{command = ["qs"];}];
+          (mkIf cfg.keybinds.enable {
+            binds = {
+              cfg.keybinds.launcher = {
+                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "appLauncher" "toggle"];
+                hotkey-overlay.title = "Toggle launcher";
+              };
+              cfg.keybinds.notification = {
+                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"];
+                hotkey-overlay.title = "Toggle Notification History";
+              };
+              cfg.keybinds.settings = {
+                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"];
+                hotkey-overlay.title = "Toggle Settings Panel";
+              };
+              cfg.keybinds.lock = {
+                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"];
+                hotkey-overlay.title = "Toggle lock screen";
+              };
+            };
+          })
+          (mkIf cfg.spawn.enable {
+            spawn-at-startup = [{command = ["qs" "-c noctalia-shell"];}];
           })
         ];
 
-        # Dependencies
+        # # Dependencies
+        programs.cava.enable = true; # Audio visualizer component
+        services.swww.enable = true; # Wallpaper animations and effects
+
         home.packages = with pkgs; [
           brightnessctl # For internal/laptop monitor brightness
-          cava # Audio visualizer component
           ddcutil # For desktop monitor brightness (might introduce some system instability with certain monitors)
           gpu-screen-recorder # Screen recording functionality
           material-symbols # Icon font for UI elements
           matugen # Material You color scheme generation
-          swww # Wallpaper animations and effects
           xdg-desktop-portal-gnome # Desktop integration (or alternative portal)
         ];
       };
