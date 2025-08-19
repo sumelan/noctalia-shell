@@ -117,19 +117,19 @@
           }
           (mkIf cfg.keybinds.enable {
             binds = {
-              cfg.keybinds.launcher = {
+              "${cfg.keybinds.launcher}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "appLauncher" "toggle"];
                 hotkey-overlay.title = "Toggle launcher";
               };
-              cfg.keybinds.notification = {
+              "${cfg.keybinds.notification}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"];
                 hotkey-overlay.title = "Toggle Notification History";
               };
-              cfg.keybinds.settings = {
+              "${cfg.keybinds.settings}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"];
                 hotkey-overlay.title = "Toggle Settings Panel";
               };
-              cfg.keybinds.lock = {
+              "${cfg.keybinds.lock}" = {
                 action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"];
                 hotkey-overlay.title = "Toggle lock screen";
               };
