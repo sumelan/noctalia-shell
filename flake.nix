@@ -153,6 +153,7 @@
           gpu-screen-recorder # Screen recording functionality
           material-symbols # Icon font for UI elements
           matugen # Material You color scheme generation
+          wl-clipboard
           xdg-desktop-portal-gnome # Desktop integration (or alternative portal)
         ];
       };
