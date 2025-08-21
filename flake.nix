@@ -137,7 +137,7 @@
             };
           })
           (mkIf cfg.spawn.enable {
-            spawn-at-startup = [{command = ["qs" "-c noctalia-shell"];}];
+            spawn-at-startup = [{command = ["qs" "-c" "noctalia-shell"];}];
           })
         ];
 
