@@ -9,9 +9,9 @@ import qs.Commons
 import qs.Services
 import qs.Widgets
 
-NLoader {
-  isLoaded: (Settings.data.dock.monitors.length > 0)
-  content: Component {
+Loader {
+  active: (Settings.data.dock.monitors.length > 0)
+  sourceComponent: Component {
     Variants {
       model: Quickshell.screens
 
@@ -159,13 +159,7 @@ NLoader {
             function getAppIcon(toplevel: Toplevel): string {
               if (!toplevel)
                 return ""
-              let icon = Quickshell.iconPath(toplevel.appId?.toLowerCase(), true)
-              if (!icon)
-                icon = Quickshell.iconPath(toplevel.appId, true)
-              if (!icon)
-                icon = Quickshell.iconPath(toplevel.title?.toLowerCase(), true)
-              if (!icon)
-                icon = Quickshell.iconPath(toplevel.title, true)
+              let icon = Quickshell.iconPath(DesktopEntries.byId(toplevel.appId?.toLowerCase()).icon)
               return icon || Quickshell.iconPath("application-x-executable", true)
             }
 

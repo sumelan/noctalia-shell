@@ -80,10 +80,19 @@ ColumnLayout {
 
         NToggle {
           label: "Show Active Window"
-          description: "Display the title of the currently focused window on the left side of the bar."
+          description: "Display the title of the currently focused window."
           checked: Settings.data.bar.showActiveWindow
           onToggled: checked => {
                        Settings.data.bar.showActiveWindow = checked
+                     }
+        }
+
+        NToggle {
+          label: "Show Active Window's Icon"
+          description: "Display the app icon next to the title of the currently focused window."
+          checked: Settings.data.bar.showActiveWindowIcon
+          onToggled: checked => {
+                       Settings.data.bar.showActiveWindowIcon = checked
                      }
         }
 
@@ -120,6 +129,15 @@ ColumnLayout {
           checked: Settings.data.bar.showTray
           onToggled: checked => {
                        Settings.data.bar.showTray = checked
+                     }
+        }
+
+        NToggle {
+          label: "Always show battery percentage"
+          description: "Show battery percentage at all times (otherwise only when charging or low)."
+          checked: Settings.data.bar.alwaysShowBatteryPercentage
+          onToggled: checked => {
+                       Settings.data.bar.alwaysShowBatteryPercentage = checked
                      }
         }
 
