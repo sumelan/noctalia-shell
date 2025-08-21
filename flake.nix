@@ -75,7 +75,7 @@
           enable = true;
           package = quickshell.packages.${system}.quickshell;
           configs = {
-            "dafault" = "${self.packages.${system}.noctalia-shell}/xdg/quickshell/noctalia-shell";
+            "default" = "${self.packages.${system}.noctalia-shell}/xdg/quickshell/noctalia-shell";
           };
           systemd = lib.mkIf cfg.systemd.enable {
             enable = true;
