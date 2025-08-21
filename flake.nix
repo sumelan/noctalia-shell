@@ -23,8 +23,8 @@
         name = "noctalia-shell";
         src = ./.;
         installPhase = ''
-          mkdir -p $out/etc/xdg/quickshell/noctalia-shell
-          cp -r . $out/etc/xdg/quickshell/noctalia-shell
+          mkdir -p $out/xdg/quickshell/noctalia-shell
+          cp -r . $out/xdg/quickshell/noctalia-shell
         '';
       };
       default = self.packages.${system}.noctalia-shell;
@@ -74,8 +74,9 @@
         programs.quickshell = {
           enable = true;
           package = quickshell.packages.${system}.quickshell;
-          configs.noctalia-shell = "${self.packages.${system}.noctalia-shell}/etc/xdg/quickshell/noctalia-shell";
-          activeConfig = lib.mkIf cfg.systemd.enable "noctalia-shell";
+          configs = {
+            "dafault" = "${self.packages.${system}.noctalia-shell}/xdg/quickshell/noctalia-shell";
+          };
           systemd = lib.mkIf cfg.systemd.enable {
             enable = true;
             target = "graphical-session.target";
@@ -119,25 +120,25 @@
           (mkIf cfg.keybinds.enable {
             binds = {
               "${cfg.keybinds.launcher}" = {
-                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "appLauncher" "toggle"];
+                action.spawn = ["qs" "ipc" "call" "appLauncher" "toggle"];
                 hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">launcher</span>'';
               };
               "${cfg.keybinds.notification}" = {
-                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"];
+                action.spawn = ["qs" "ipc" "call" "notifications" "toggleHistory"];
                 hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">Notification History</span>'';
               };
               "${cfg.keybinds.settings}" = {
-                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle"];
+                action.spawn = ["qs" "ipc" "call" "settings" "toggle"];
                 hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">Settings Panel</span>'';
               };
               "${cfg.keybinds.lock}" = {
-                action.spawn = ["qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"];
+                action.spawn = ["qs" "ipc" "call" "lockScreen" "toggle"];
                 hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">lock screen</span>'';
               };
             };
           })
           (mkIf cfg.spawn.enable {
-            spawn-at-startup = [{command = ["qs" "-c" "noctalia-shell"];}];
+            spawn-at-startup = [{command = ["qs"];}];
           })
         ];
 
