@@ -135,6 +135,14 @@
                 action.spawn = ["qs" "ipc" "call" "lockScreen" "toggle"];
                 hotkey-overlay.title = ''<i>Toggle</i> <span foreground="${hotkeyColor}">lock screen</span>'';
               };
+              "XF86MonBrightnessUp" = {
+                allow-when-locked = true;
+                action.spawn = ["qs" "ipc" "call" "brightness" "increase"];
+              };
+              "XF86MonBrightnessDown" = {
+                allow-when-locked = true;
+                action.spawn = ["qs" "ipc" "call" "brightness" "decrease"];
+              };
             };
           })
           (mkIf cfg.spawn.enable {
@@ -153,7 +161,6 @@
           gpu-screen-recorder # Screen recording functionality
           material-symbols # Icon font for UI elements
           matugen # Material You color scheme generation
-          wl-clipboard
           xdg-desktop-portal-gnome # Desktop integration (or alternative portal)
         ];
       };
