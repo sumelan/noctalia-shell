@@ -148,6 +148,7 @@
 
         home.packages = with pkgs; [
           brightnessctl # For internal/laptop monitor brightness
+          cliphist
           ddcutil # For desktop monitor brightness (might introduce some system instability with certain monitors)
           gpu-screen-recorder # Screen recording functionality
           material-symbols # Icon font for UI elements
