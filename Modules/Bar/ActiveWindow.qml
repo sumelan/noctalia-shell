@@ -49,8 +49,7 @@ Row {
     if (!focusedWindow || !focusedWindow.appId)
       return ""
 
-    let icon = Quickshell.iconPath(DesktopEntries.byId(focusedWindow.appId).icon)
-    return icon || ""
+    return Icons.iconForAppId(focusedWindow.appId)
   }
 
   //  A hidden text element to safely measure the full title width

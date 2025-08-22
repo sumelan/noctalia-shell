@@ -92,10 +92,30 @@ ColumnLayout {
             Layout.bottomMargin: Style.marginS * scaling
           }
 
+          // Source
+          NComboBox {
+            label: "Video Source"
+            description: "We recommend using portal, if you get artifacts try screen."
+            model: ListModel {
+              ListElement {
+                key: "portal"
+                name: "Portal"
+              }
+              ListElement {
+                key: "screen"
+                name: "Screen"
+              }
+            }
+            currentKey: Settings.data.screenRecorder.videoSource
+            onSelected: key => {
+                          Settings.data.screenRecorder.videoSource = key
+                        }
+          }
+
           // Frame Rate
           NComboBox {
             label: "Frame Rate"
-            description: "Target frame rate for screen recordings (default: 60)."
+            description: "Target frame rate for screen recordings. (default: 60)"
             model: ListModel {
               ListElement {
                 key: "30"
@@ -115,9 +135,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.screenRecorder.frameRate
-            onSelected: function (key) {
-              Settings.data.screenRecorder.frameRate = key
-            }
+            onSelected: key => {
+                          Settings.data.screenRecorder.frameRate = key
+                        }
           }
 
           // Video Quality
@@ -143,9 +163,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.screenRecorder.quality
-            onSelected: function (key) {
-              Settings.data.screenRecorder.quality = key
-            }
+            onSelected: key => {
+                          Settings.data.screenRecorder.quality = key
+                        }
           }
 
           // Video Codec
@@ -175,9 +195,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.screenRecorder.videoCodec
-            onSelected: function (key) {
-              Settings.data.screenRecorder.videoCodec = key
-            }
+            onSelected: key => {
+                          Settings.data.screenRecorder.videoCodec = key
+                        }
           }
 
           // Color Range
@@ -195,9 +215,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.screenRecorder.colorRange
-            onSelected: function (key) {
-              Settings.data.screenRecorder.colorRange = key
-            }
+            onSelected: key => {
+                          Settings.data.screenRecorder.colorRange = key
+                        }
           }
         }
 
@@ -239,9 +259,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.screenRecorder.audioSource
-            onSelected: function (key) {
-              Settings.data.screenRecorder.audioSource = key
-            }
+            onSelected: key => {
+                          Settings.data.screenRecorder.audioSource = key
+                        }
           }
 
           // Audio Codec
@@ -259,9 +279,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.screenRecorder.audioCodec
-            onSelected: function (key) {
-              Settings.data.screenRecorder.audioCodec = key
-            }
+            onSelected: key => {
+                          Settings.data.screenRecorder.audioCodec = key
+                        }
           }
         }
       }

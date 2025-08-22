@@ -83,13 +83,13 @@ RowLayout {
         root.hovering = false
         root.exited()
       }
-      onWheel: function (wheel) {
-        if (wheel.angleDelta.y > 0 && spinBox.value < spinBox.to) {
-          spinBox.increase()
-        } else if (wheel.angleDelta.y < 0 && spinBox.value > spinBox.from) {
-          spinBox.decrease()
-        }
-      }
+      onWheel: wheel => {
+                 if (wheel.angleDelta.y > 0 && spinBox.value < spinBox.to) {
+                   spinBox.increase()
+                 } else if (wheel.angleDelta.y < 0 && spinBox.value > spinBox.from) {
+                   spinBox.decrease()
+                 }
+               }
     }
 
     // Decrease button (left)

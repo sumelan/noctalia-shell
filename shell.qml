@@ -13,7 +13,7 @@ import Quickshell.Io
 import Quickshell.Services.Pipewire
 import Quickshell.Widgets
 import qs.Commons
-import qs.Modules.AppLauncher
+import qs.Modules.Launcher
 import qs.Modules.Background
 import qs.Modules.Bar
 import qs.Modules.Calendar
@@ -38,8 +38,8 @@ ShellRoot {
   Bar {}
   Dock {}
 
-  AppLauncher {
-    id: appLauncherPanel
+  Launcher {
+    id: launcherPanel
   }
 
   SidePanel {
@@ -77,6 +77,9 @@ ShellRoot {
   Component.onCompleted: {
     // Save a ref. to our sidePanel so we can access it from services
     PanelService.sidePanel = sidePanel
+
+    // Save a ref. to our lockScreen so we can access it from services
+    PanelService.lockScreen = lockScreen
 
     // Ensure our singleton is created as soon as possible so we start fetching weather asap
     LocationService.init()

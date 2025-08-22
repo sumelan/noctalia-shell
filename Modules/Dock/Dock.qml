@@ -23,7 +23,7 @@ Loader {
         screen: modelData
 
         // Auto-hide properties - make reactive to settings changes
-        property bool autoHide: Settings.data.dock.autoHide
+        property bool autoHide: Settings.data.dock.autoHide || (Settings.data.bar.position === "bottom")
         property bool hidden: autoHide
         property int hideDelay: 500
         property int showDelay: 100
@@ -159,8 +159,7 @@ Loader {
             function getAppIcon(toplevel: Toplevel): string {
               if (!toplevel)
                 return ""
-              let icon = Quickshell.iconPath(DesktopEntries.byId(toplevel.appId?.toLowerCase()).icon)
-              return icon || Quickshell.iconPath("application-x-executable", true)
+              return Icons.iconForAppId(toplevel.appId?.toLowerCase())
             }
 
             Row {

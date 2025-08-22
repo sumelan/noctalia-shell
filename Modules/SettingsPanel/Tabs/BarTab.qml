@@ -72,9 +72,9 @@ ColumnLayout {
               }
             }
             currentKey: Settings.data.bar.position
-            onSelected: function (key) {
-              Settings.data.bar.position = key
-            }
+            onSelected: key => {
+                          Settings.data.bar.position = key
+                        }
           }
         }
 
@@ -133,8 +133,8 @@ ColumnLayout {
         }
 
         NToggle {
-          label: "Always show battery percentage"
-          description: "Show battery percentage at all times (otherwise only when charging or low)."
+          label: "Show Battery Percentage"
+          description: "Show battery percentage at all times."
           checked: Settings.data.bar.alwaysShowBatteryPercentage
           onToggled: checked => {
                        Settings.data.bar.alwaysShowBatteryPercentage = checked
