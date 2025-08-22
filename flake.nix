@@ -159,8 +159,10 @@
           cliphist
           ddcutil # For desktop monitor brightness (might introduce some system instability with certain monitors)
           gpu-screen-recorder # Screen recording functionality
+          inter
           material-symbols # Icon font for UI elements
           matugen # Material You color scheme generation
+          roboto
         ];
       };
     };
