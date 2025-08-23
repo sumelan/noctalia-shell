@@ -163,6 +163,13 @@ Loader {
           }
         }
 
+        // Keyboard layout indicator component
+        Item {
+          id: keyboardLayout
+
+          property string currentLayout: (typeof KeyboardLayoutService !== 'undefined' && KeyboardLayoutService.currentLayout) ? KeyboardLayoutService.currentLayout : "Unknown"
+        }
+
         // Wallpaper image
         Image {
           id: lockBgImage
@@ -294,13 +301,14 @@ Loader {
 
               // Animated avatar with glow effect or audio visualizer
               Rectangle {
-                width: 120 * scaling
-                height: 120 * scaling
+                width: 108 * scaling
+                height: 108 * scaling
                 radius: width * 0.5
                 color: Color.transparent
                 border.color: Color.mPrimary
                 border.width: Math.max(1, Style.borderL * scaling)
                 anchors.horizontalCenter: parent.horizontalCenter
+                z: 10
 
                 // Circular audio visualizer when music is playing
                 Loader {
@@ -464,13 +472,12 @@ Loader {
                   }
                 }
 
-                NImageRounded {
+                NImageCircled {
                   anchors.centerIn: parent
                   width: 100 * scaling
                   height: 100 * scaling
                   imagePath: Settings.data.general.avatarImage
                   fallbackIcon: "person"
-                  imageRadius: width * 0.5
                 }
 
                 // Hover animation
@@ -578,6 +585,25 @@ Loader {
                         font.family: Settings.data.ui.fontFixed
                         font.pointSize: Style.fontSizeM * scaling
                         font.weight: Style.fontWeightBold
+                      }
+                    }
+
+                    // Keyboard layout indicator
+                    Row {
+                      spacing: Style.marginS * scaling
+
+                      NText {
+                        text: keyboardLayout.currentLayout
+                        color: Color.mOnSurface
+                        font.family: Settings.data.ui.fontFixed
+                        font.pointSize: Style.fontSizeM * scaling
+                        font.weight: Style.fontWeightBold
+                      }
+
+                      NIcon {
+                        text: "keyboard_alt"
+                        font.pointSize: Style.fontSizeM * scaling
+                        color: Color.mOnSurface
                       }
                     }
                   }

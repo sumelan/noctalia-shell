@@ -76,7 +76,7 @@ NBox {
           // implicitWidth: 120 * scaling
           // implicitHeight: 30 * scaling
           color: Color.transparent
-          border.color: playerSelector.activeFocus ? Color.mTertiary : Color.mOutline
+          border.color: playerSelector.activeFocus ? Color.mSecondary : Color.mOutline
           border.width: Math.max(1, Style.borderS * scaling)
           radius: Style.radiusM * scaling
         }
@@ -138,7 +138,7 @@ NBox {
 
           background: Rectangle {
             width: popup.width - Style.marginS * scaling * 2
-            color: highlighted ? Color.mTertiary : Color.transparent
+            color: highlighted ? Color.mSecondary : Color.transparent
             radius: Style.radiusXS * scaling
           }
         }
@@ -160,11 +160,9 @@ NBox {
           height: 90 * scaling
           radius: width * 0.5
           color: trackArt.visible ? Color.mPrimary : Color.transparent
-          border.color: trackArt.visible ? Color.mOutline : Color.transparent
-          border.width: Math.max(1, Style.borderS * scaling)
           clip: true
 
-          NImageRounded {
+          NImageCircled {
             id: trackArt
             visible: MediaService.trackArtUrl.toString() !== ""
 
@@ -174,7 +172,6 @@ NBox {
             fallbackIcon: "music_note"
             borderColor: Color.mOutline
             borderWidth: Math.max(1, Style.borderS * scaling)
-            imageRadius: width * 0.5
           }
 
           // Fallback icon when no album art available

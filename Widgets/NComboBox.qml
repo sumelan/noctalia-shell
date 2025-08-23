@@ -8,14 +8,15 @@ import qs.Widgets
 ColumnLayout {
   id: root
 
-  readonly property real preferredHeight: Style.baseWidgetSize * 1.25 * scaling
+  readonly property real preferredHeight: Style.baseWidgetSize * 1.35 * scaling
 
   property string label: ""
   property string description: ""
   property ListModel model: {
 
   }
-  property string currentKey: ''
+  property string currentKey: ""
+  property string placeholder: ""
 
   signal selected(string key)
 
@@ -38,7 +39,8 @@ ColumnLayout {
 
   ComboBox {
     id: combo
-    Layout.fillWidth: true
+
+    Layout.preferredWidth: 320 * scaling
     Layout.preferredHeight: height
     model: model
     currentIndex: findIndexByKey(currentKey)
@@ -50,7 +52,7 @@ ColumnLayout {
       implicitWidth: Style.baseWidgetSize * 3.75 * scaling
       implicitHeight: preferredHeight
       color: Color.mSurface
-      border.color: combo.activeFocus ? Color.mTertiary : Color.mOutline
+      border.color: combo.activeFocus ? Color.mSecondary : Color.mOutline
       border.width: Math.max(1, Style.borderS * scaling)
       radius: Style.radiusM * scaling
     }
@@ -61,8 +63,10 @@ ColumnLayout {
       font.pointSize: Style.fontSizeM * scaling
       verticalAlignment: Text.AlignVCenter
       elide: Text.ElideRight
-      text: (combo.currentIndex >= 0 && combo.currentIndex < root.model.count) ? root.model.get(
-                                                                                   combo.currentIndex).name : ""
+      color: (combo.currentIndex >= 0
+              && combo.currentIndex < root.model.count) ? Color.mOnSurface : Color.mOnSurfaceVariant
+      text: (combo.currentIndex >= 0
+             && combo.currentIndex < root.model.count) ? root.model.get(combo.currentIndex).name : root.placeholder
     }
 
     indicator: NIcon {
@@ -112,7 +116,7 @@ ColumnLayout {
 
           background: Rectangle {
             width: combo.width - Style.marginM * scaling * 3
-            color: highlighted ? Color.mTertiary : Color.transparent
+            color: highlighted ? Color.mSecondary : Color.transparent
             radius: Style.radiusS * scaling
           }
         }
@@ -123,6 +127,14 @@ ColumnLayout {
         border.color: Color.mOutline
         border.width: Math.max(1, Style.borderS * scaling)
         radius: Style.radiusM * scaling
+      }
+    }
+
+    // Update the currentIndex if the currentKey is changed externalyu
+    Connections {
+      target: root
+      function onCurrentKeyChanged() {
+        combo.currentIndex = root.findIndexByKey(currentKey)
       }
     }
   }

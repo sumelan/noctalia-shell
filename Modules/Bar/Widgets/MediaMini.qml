@@ -11,7 +11,8 @@ Row {
   id: root
   anchors.verticalCenter: parent.verticalCenter
   spacing: Style.marginS * scaling
-  visible: Settings.data.bar.showMedia && (MediaService.canPlay || MediaService.canPause)
+  visible: MediaService.currentPlayer !== null && MediaService.canPlay
+  width: MediaService.currentPlayer !== null && MediaService.canPlay ? implicitWidth : 0
 
   function getTitle() {
     return MediaService.trackTitle + (MediaService.trackArtist !== "" ? ` - ${MediaService.trackArtist}` : "")
@@ -109,14 +110,14 @@ Row {
           visible: Settings.data.audio.showMiniplayerAlbumArt
 
           Rectangle {
-            width: 16 * scaling
-            height: 16 * scaling
+            width: 18 * scaling
+            height: 18 * scaling
             radius: width * 0.5
             color: Color.transparent
             antialiasing: true
             clip: true
 
-            NImageRounded {
+            NImageCircled {
               id: trackArt
               visible: MediaService.trackArtUrl.toString() !== ""
               anchors.fill: parent
@@ -126,8 +127,6 @@ Row {
               fallbackIcon: MediaService.isPlaying ? "pause" : "play_arrow"
               borderWidth: 0
               border.color: Color.transparent
-              imageRadius: width
-              antialiasing: true
             }
 
             // Fallback icon when no album art available
@@ -145,7 +144,7 @@ Row {
         NText {
           id: titleText
 
-          // If hovered or just switched window, show up to 300 pixels
+          // If hovered or just switched window, show up to 400 pixels
           // If not hovered show up to 150 pixels
           width: (mouseArea.containsMouse) ? Math.min(fullTitleMetrics.contentWidth,
                                                       400 * scaling) : Math.min(fullTitleMetrics.contentWidth,

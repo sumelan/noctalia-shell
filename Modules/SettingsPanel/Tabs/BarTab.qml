@@ -33,13 +33,6 @@ ColumnLayout {
         spacing: Style.marginL * scaling
         Layout.fillWidth: true
 
-        NText {
-          text: "Bar Components"
-          font.pointSize: Style.fontSizeXXL * scaling
-          font.weight: Style.fontWeightBold
-          color: Color.mOnSurface
-        }
-
         ColumnLayout {
           spacing: Style.marginXXS * scaling
           Layout.fillWidth: true
@@ -76,69 +69,6 @@ ColumnLayout {
                           Settings.data.bar.position = key
                         }
           }
-        }
-
-        NToggle {
-          label: "Show Active Window"
-          description: "Display the title of the currently focused window."
-          checked: Settings.data.bar.showActiveWindow
-          onToggled: checked => {
-                       Settings.data.bar.showActiveWindow = checked
-                     }
-        }
-
-        NToggle {
-          label: "Show Active Window's Icon"
-          description: "Display the app icon next to the title of the currently focused window."
-          checked: Settings.data.bar.showActiveWindowIcon
-          onToggled: checked => {
-                       Settings.data.bar.showActiveWindowIcon = checked
-                     }
-        }
-
-        NToggle {
-          label: "Show System Info"
-          description: "Display system statistics (CPU, RAM, Temperature)."
-          checked: Settings.data.bar.showSystemInfo
-          onToggled: checked => {
-                       Settings.data.bar.showSystemInfo = checked
-                     }
-        }
-
-        NToggle {
-          label: "Show Media"
-          description: "Display media controls and information."
-          checked: Settings.data.bar.showMedia
-          onToggled: checked => {
-                       Settings.data.bar.showMedia = checked
-                     }
-        }
-
-        NToggle {
-          label: "Show Notifications History"
-          description: "Display a shortcut to the notifications history."
-          checked: Settings.data.bar.showNotificationsHistory
-          onToggled: checked => {
-                       Settings.data.bar.showNotificationsHistory = checked
-                     }
-        }
-
-        NToggle {
-          label: "Show Applications Tray"
-          description: "Display the applications tray."
-          checked: Settings.data.bar.showTray
-          onToggled: checked => {
-                       Settings.data.bar.showTray = checked
-                     }
-        }
-
-        NToggle {
-          label: "Show Battery Percentage"
-          description: "Show battery percentage at all times."
-          checked: Settings.data.bar.alwaysShowBatteryPercentage
-          onToggled: checked => {
-                       Settings.data.bar.alwaysShowBatteryPercentage = checked
-                     }
         }
 
         ColumnLayout {
@@ -179,7 +109,180 @@ ColumnLayout {
             }
           }
         }
+
+        NToggle {
+          label: "Show Active Window's Icon"
+          description: "Display the app icon next to the title of the currently focused window."
+          checked: Settings.data.bar.showActiveWindowIcon
+          onToggled: checked => {
+                       Settings.data.bar.showActiveWindowIcon = checked
+                     }
+        }
+
+        NToggle {
+          label: "Show Battery Percentage"
+          description: "Show battery percentage at all times."
+          checked: Settings.data.bar.alwaysShowBatteryPercentage
+          onToggled: checked => {
+                       Settings.data.bar.alwaysShowBatteryPercentage = checked
+                     }
+        }
+
+        NDivider {
+          Layout.fillWidth: true
+          Layout.topMargin: Style.marginL * scaling
+          Layout.bottomMargin: Style.marginL * scaling
+        }
+
+        // Widgets Management Section
+        ColumnLayout {
+          spacing: Style.marginXXS * scaling
+          Layout.fillWidth: true
+
+          NText {
+            text: "Widgets Positioning"
+            font.pointSize: Style.fontSizeXXL * scaling
+            font.weight: Style.fontWeightBold
+            color: Color.mOnSurface
+            Layout.bottomMargin: Style.marginS * scaling
+          }
+
+          NText {
+            text: "Drag and drop widgets to reorder them within each section, or use the add/remove buttons to manage widgets."
+            font.pointSize: Style.fontSizeXS * scaling
+            color: Color.mOnSurfaceVariant
+            wrapMode: Text.WordWrap
+            Layout.fillWidth: true
+          }
+
+          // Bar Sections
+          ColumnLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.topMargin: Style.marginM * scaling
+            spacing: Style.marginM * scaling
+
+            // Left Section
+            NWidgetCard {
+              sectionName: "Left"
+              widgetModel: Settings.data.bar.widgets.left
+              availableWidgets: availableWidgets
+              scrollView: scrollView
+              onAddWidget: (widgetName, section) => addWidgetToSection(widgetName, section)
+              onRemoveWidget: (section, index) => removeWidgetFromSection(section, index)
+              onReorderWidget: (section, fromIndex, toIndex) => reorderWidgetInSection(section, fromIndex, toIndex)
+            }
+
+            // Center Section
+            NWidgetCard {
+              sectionName: "Center"
+              widgetModel: Settings.data.bar.widgets.center
+              availableWidgets: availableWidgets
+              scrollView: scrollView
+              onAddWidget: (widgetName, section) => addWidgetToSection(widgetName, section)
+              onRemoveWidget: (section, index) => removeWidgetFromSection(section, index)
+              onReorderWidget: (section, fromIndex, toIndex) => reorderWidgetInSection(section, fromIndex, toIndex)
+            }
+
+            // Right Section
+            NWidgetCard {
+              sectionName: "Right"
+              widgetModel: Settings.data.bar.widgets.right
+              availableWidgets: availableWidgets
+              scrollView: scrollView
+              onAddWidget: (widgetName, section) => addWidgetToSection(widgetName, section)
+              onRemoveWidget: (section, index) => removeWidgetFromSection(section, index)
+              onReorderWidget: (section, fromIndex, toIndex) => reorderWidgetInSection(section, fromIndex, toIndex)
+            }
+          }
+        }
       }
     }
+  }
+
+  // Helper functions
+  function addWidgetToSection(widgetName, section) {
+    console.log("Adding widget", widgetName, "to section", section)
+    var sectionArray = Settings.data.bar.widgets[section]
+    if (sectionArray) {
+      // Create a new array to avoid modifying the original
+      var newArray = sectionArray.slice()
+      newArray.push(widgetName)
+      console.log("Widget added. New array:", JSON.stringify(newArray))
+
+      // Assign the new array
+      Settings.data.bar.widgets[section] = newArray
+    }
+  }
+
+  function removeWidgetFromSection(section, index) {
+    console.log("Removing widget from section", section, "at index", index)
+    var sectionArray = Settings.data.bar.widgets[section]
+    console.log("Current section array:", JSON.stringify(sectionArray))
+    
+    if (sectionArray && index >= 0 && index < sectionArray.length) {
+      // Create a new array to avoid modifying the original
+      var newArray = sectionArray.slice()
+      newArray.splice(index, 1)
+      console.log("Widget removed. New array:", JSON.stringify(newArray))
+
+      // Assign the new array
+      Settings.data.bar.widgets[section] = newArray
+      
+      // Force a settings save
+      console.log("Settings updated, triggering save...")
+      
+      // Verify the change was applied
+      Qt.setTimeout(function() {
+        var updatedArray = Settings.data.bar.widgets[section]
+        console.log("Verification - updated section array:", JSON.stringify(updatedArray))
+      }, 100)
+    } else {
+      console.log("Invalid section or index:", section, index, "array length:", sectionArray ? sectionArray.length : "null")
+    }
+  }
+
+  function reorderWidgetInSection(section, fromIndex, toIndex) {
+    console.log("Reordering widget in section", section, "from", fromIndex, "to", toIndex)
+    var sectionArray = Settings.data.bar.widgets[section]
+    if (sectionArray && fromIndex >= 0 && fromIndex < sectionArray.length && toIndex >= 0
+        && toIndex < sectionArray.length) {
+
+      // Create a new array to avoid modifying the original
+      var newArray = sectionArray.slice()
+      var item = newArray[fromIndex]
+      newArray.splice(fromIndex, 1)
+      newArray.splice(toIndex, 0, item)
+      console.log("Widget reordered. New array:", JSON.stringify(newArray))
+
+      // Assign the new array
+      Settings.data.bar.widgets[section] = newArray
+    }
+  }
+
+  // Widget loader for discovering available widgets
+  WidgetLoader {
+    id: widgetLoader
+  }
+
+  ListModel {
+    id: availableWidgets
+  }
+
+  Component.onCompleted: {
+    discoverWidgets()
+  }
+
+  // Automatically discover available widgets using WidgetLoader
+  function discoverWidgets() {
+    availableWidgets.clear()
+
+    // Use WidgetLoader to discover available widgets
+    const discoveredWidgets = widgetLoader.discoverAvailableWidgets()
+
+    // Add discovered widgets to the ListModel
+    discoveredWidgets.forEach(widget => {
+                                availableWidgets.append(widget)
+                              })
   }
 }
