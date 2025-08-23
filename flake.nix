@@ -23,8 +23,8 @@
         name = "noctalia-shell";
         src = ./.;
         installPhase = ''
-          mkdir -p $out/xdg/quickshell/noctalia-shell
-          cp -r . $out/xdg/quickshell/noctalia-shell
+          mkdir -p $out/etc/xdg/quickshell/noctalia-shell
+          cp -r . $out/etc/xdg/quickshell/noctalia-shell
         '';
       };
       default = self.packages.${system}.noctalia-shell;
@@ -75,9 +75,9 @@
           enable = true;
           package = quickshell.packages.${system}.quickshell;
           configs = {
-            "default" = "${self.packages.${system}.noctalia-shell}/xdg/quickshell/noctalia-shell";
+            "default" = "${self.packages.${system}.noctalia-shell}/etc/xdg/quickshell/noctalia-shell";
           };
-          systemd = lib.mkIf cfg.systemd.enable {
+          systemd = mkIf cfg.systemd.enable {
             enable = true;
             target = "graphical-session.target";
           };
