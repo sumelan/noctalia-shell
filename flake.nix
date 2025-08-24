@@ -36,13 +36,11 @@
       lib,
       ...
     }: let
-      inherit (lib) types literalExpression;
+      inherit (lib) types;
       inherit (lib.options) mkEnableOption mkOption;
       inherit (lib.modules) mkIf mkMerge;
 
       cfg = config.programs.noctalia-shell;
-
-      jsonFormat = pkgs.formats.json {};
     in {
       options.programs.noctalia-shell = with types; {
         enable = mkEnableOption "Noctalia";
@@ -69,155 +67,6 @@
             default = "Mod+Ctrl+L";
             description = "Keybind to toggle lock screen";
           };
-        };
-
-        colors = mkOption {
-          type = jsonFormat.type;
-          visible = false;
-          default = null;
-          description = "Color Scheme";
-          example =
-            literalExpression
-            # Noctalia
-            ''
-              {
-                mError = "#e9899d";
-                mOnError ="#1e1418";
-                mOnPrimary = "#1a151f";
-                mOnSecondary = "#f3edf7";
-                mOnSurface = "#e9e4f0";
-                mOnSurfaceVariant = "#a79ab0";
-                mOnTertiary = "#20161f";
-                mOutline = "#3e364e";
-                mPrimary = "#c7a1d8";
-                mSecondary = "#a984c4";
-                mShadow = "#120f18";
-                mSurface = "#1c1822";
-                mSurfaceVariant = "#262130";
-                mTertiary = "#e0b7c9";
-              }
-            '';
-        };
-
-        settings = mkOption {
-          type = jsonFormat.type;
-          visible = false;
-          default = null;
-          description = "Noctalia Settings";
-          example = literalExpression ''
-            {
-              "appLauncher" = {
-                enableClipboardHistory = true;
-                pinnedExecs = [
-                ],
-                position = "center";
-              };
-              "audio" = {
-                cavaFrameRate = 60;
-                showMiniplayerAlbumArt = false;
-                showMiniplayerCava = false;
-                visualizerType = "linear";
-                volumeStep = 5;
-              };
-              "bar" = {
-                alwaysShowBatteryPercentage = false;
-                backgroundOpacity = 1;
-                monitors = [
-                ];
-                position = "top";
-                showActiveWindowIcon = true;
-                widgets = {
-                  center = [
-                    "Workspace"
-                  ];
-                  left = [
-                    "SystemMonitor"
-                    "ActiveWindow"
-                    "MediaMini"
-                  ];
-                  right = [
-                    "ScreenRecorderIndicator"
-                    "Tray"
-                    "NotificationHistory"
-                    "WiFi"
-                    "Bluetooth"
-                    "Battery"
-                    "Volume"
-                    "Brightness"
-                    "Clock"
-                    "SidePanelToggle"
-                  ];
-                };
-              };
-            "brightness" = {
-              brightnessStep = 5;
-            };
-            "colorSchemes" = {
-              darkMode = true;
-              predefinedScheme = "";
-              themeApps = false;
-              useWallpaperColors = false;
-            };
-            "dock" = {
-              autoHide = false;
-              exclusive = false;
-              monitors = [
-              ];
-            };
-            "general" = {
-              avatarImage = "/home/sumelan/.face";
-              dimDesktop = false;
-              radiusRatio = 1;
-              showScreenCorners = false;
-            };
-            "location" = {
-              name = "Tokyo";
-              reverseDayMonth = false;
-              showDateWithClock = false;
-              use12HourClock = false;
-              useFahrenheit = false;
-            };
-            "monitorsScaling" = null;
-            "network" = {
-              bluetoothEnabled = true;
-              wifiEnabled = true;
-            };
-            "notifications" = {
-              monitors = [
-              ];
-            };
-            "screenRecorder" = {
-              audioCodec = "opus";
-              audioSource = "default_output";
-              colorRange = "limited";
-              directory = "~/Videos";
-              frameRate = 60;
-              quality = "very_high";
-              showCursor = true;
-              videoCodec = "h264";
-              videoSource = "portal";
-            };
-            "ui" = {
-              fontBillboard" = "Inter";
-              fontDefault = "Roboto";
-              fontFamily = "Roboto";
-              fontFixed = "DejaVu Sans Mono";
-              idleInhibitorEnabled = false;
-            };
-            "wallpaper": {
-              current = "";
-              directory = "/usr/share/wallpapers";
-              isRandom = false;
-              randomInterval = 300;
-              swww = {
-                enabled = false;
-                resizeMethod = "crop";
-                transitionDuration = 1.1;
-                transitionFps = 60;
-                transitionType = "random";
-              };
-            };
-          '';
         };
 
         systemd.enable = mkEnableOption "Systemd startup.";
@@ -304,24 +153,6 @@
             spawn-at-startup = [{command = ["qs"];}];
           })
         ];
-
-        xdg.configFile = let
-          colorSource = jsonFormat.generate "colors.json" cfg.colors;
-          configSource = jsonFormat.generate "settings.json" cfg.settings;
-        in {
-          "noctalia/colors.json" = mkIf (cfg.colors != null) {
-            source = colorSource;
-            onChange = ''
-              ${pkgs.procps}/bin/pkill -u $USER -USR2 quickshell && qs
-            '';
-          };
-          "noctalia/settings.json" = mkIf (cfg.colors != null) {
-            source = configSource;
-            onChange = ''
-              ${pkgs.procps}/bin/pkill -u $USER -USR2 quickshell && qs
-            '';
-          };
-        };
 
         # # Dependencies
         programs.cava.enable = true; # Audio visualizer component
